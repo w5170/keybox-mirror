@@ -22,6 +22,8 @@ jobs:
 
       - name: Fetch latest TAKR keybox
         env:
+          SOLVER_PROVIDER: ${{ vars.SOLVER_PROVIDER }}
+          CAPSOLVER_CLIENT_KEY: ${{ secrets.CAPSOLVER_CLIENT_KEY }}
           CAPMONSTER_CLIENT_KEY: ${{ secrets.CAPMONSTER_CLIENT_KEY }}
         run: python scripts/update_keybox.py
 
