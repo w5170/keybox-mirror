@@ -2,18 +2,33 @@
 
 这个仓库用于把 TAKR 最新 `status=valid` 的 `keybox.xml` 镜像成 GitHub Raw 直链，供 Yurikey 模块直接后台下载。
 
-## 你需要做的事
+## Solver 支持
 
-1. 在 GitHub 新建一个 **Public** 仓库，例如：`keybox-mirror`。
-2. 上传本模板里的全部文件到仓库根目录。
-3. 在仓库设置里添加 Actions Secret：
-   - Name: `CAPMONSTER_CLIENT_KEY`
-   - Value: 你的 CapMonster Cloud client key
-4. 进入仓库 `Actions` 页，运行 `Update TAKR keybox` workflow。
-5. 成功后仓库会生成/更新：
+支持二选一：
+
+- CapSolver：添加 Actions Secret `CAPSOLVER_CLIENT_KEY`
+- CapMonster：添加 Actions Secret `CAPMONSTER_CLIENT_KEY`
+
+如果两个都存在，默认优先使用 CapSolver。也可以在 `Settings → Secrets and variables → Actions → Variables` 里添加：
+
+```text
+SOLVER_PROVIDER=capsolver
+```
+
+或：
+
+```text
+SOLVER_PROVIDER=capmonster
+```
+
+## 使用步骤
+
+1. 在仓库 `Settings → Secrets and variables → Actions → New repository secret` 添加 solver API key。
+2. 进入 `Actions → Update TAKR keybox → Run workflow`。
+3. 成功后仓库会生成/更新：
    - `keybox.xml`
    - `metadata.json`
-6. 手机模块配置 GitHub Raw 地址：
+4. 手机模块配置 GitHub Raw 地址：
 
 ```sh
 su
@@ -24,10 +39,4 @@ EOF
 chmod 600 /data/adb/Yurikey/keybox_source.conf
 ```
 
-把 `YOUR_USERNAME` 和 `keybox-mirror` 改成你的 GitHub 用户名和仓库名。
-
-之后点 Yurikey 模块里的 `Yuri Keybox`，它会优先从你的 GitHub Raw 下载，不再跳 TAKR 网页。
-
-## 自动更新频率
-
-默认每 6 小时跑一次，也可以在 GitHub Actions 里手动运行。
+默认每 6 小时自动更新一次，也可以手动运行。
